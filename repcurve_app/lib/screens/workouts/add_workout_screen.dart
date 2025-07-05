@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../models/workout_models.dart';
+import '../../services/api_service.dart';
 
 class AddWorkoutScreen extends StatefulWidget {
   final DateTime? selectedDate;
@@ -73,12 +75,39 @@ class _AddWorkoutScreenState extends State<AddWorkoutScreen> {
     });
 
     try {
-      // TODO: Save workout to API
-      await Future.delayed(const Duration(seconds: 1)); // Simulated API call
+      // For now, create a simple template and schedule it
+      // First, create a basic workout template
+      final template = WorkoutTemplate(
+        name: _nameController.text.trim(),
+        description: _notesController.text.trim(),
+      );
+
+      final templateResponse = await ApiService.createWorkoutTemplate(template);
+      
+      if (!templateResponse.success || templateResponse.data == null) {
+        throw Exception(templateResponse.error ?? 'Failed to create workout template');
+      }
+
+      // Then schedule the workout
+      final scheduledWorkout = ScheduledWorkout(
+        templateId: templateResponse.data!.id!,
+        templateName: templateResponse.data!.name,
+        scheduledDate: _selectedDate,
+        notes: _notesController.text.trim(),
+      );
+
+      final scheduleResponse = await ApiService.createScheduledWorkout(scheduledWorkout);
+      
+      if (!scheduleResponse.success) {
+        throw Exception(scheduleResponse.error ?? 'Failed to schedule workout');
+      }
       
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Workout saved successfully!')),
+          SnackBar(
+            content: Text('Workout "${_nameController.text.trim()}" scheduled for ${_selectedDate.day}/${_selectedDate.month}!'),
+            backgroundColor: Colors.green,
+          ),
         );
         Navigator.of(context).pop();
       }

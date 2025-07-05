@@ -1,5 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 from . import views
 
 router = DefaultRouter()
@@ -9,6 +10,15 @@ router.register(r'scheduled-workouts', views.ScheduledWorkoutViewSet, basename='
 router.register(r'workout-logs', views.WorkoutLogViewSet, basename='workout-logs')
 
 urlpatterns = [
+    # API Documentation
+    path('schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    
+    # Health and info endpoints
+    path('health/', views.api_health, name='api_health'),
+    path('info/', views.api_info, name='api_info'),
+    
     # Authentication endpoints
     path('auth/register/', views.register, name='register'),
     path('auth/login/', views.login, name='login'),

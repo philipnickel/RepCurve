@@ -233,3 +233,39 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Flutter/Dart specific
+**/build/
+**/.dart_tool/
+**/.packages
+**/.pub-cache/
+**/.pub/
+**/pubspec.lock
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.metadata
+**/.flutter
+
+# iOS specific
+**/ios/Runner.xcworkspace/
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+
+# Android specific  
+**/android/.gradle/
+**/android/captures/
+**/android/gradle.properties
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+**/android/.project
+**/android/.settings/
+**/android/gradlew
+**/android/gradlew.bat
+
+# Web specific
+**/web/
+
+# macOS specific
+**/macos/Flutter/GeneratedPluginRegistrant.swift

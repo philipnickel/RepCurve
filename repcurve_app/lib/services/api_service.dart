@@ -6,6 +6,7 @@ import '../models/workout_models.dart';
 import 'auth_service.dart';
 
 class ApiService {
+  // Development URLs
   static const String baseUrl = 'http://127.0.0.1:8000/api';
   
   // For testing on physical device, use your computer's IP address
