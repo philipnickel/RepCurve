@@ -1,0 +1,67 @@
+{
+    "workout_id": "uuid-or-int-here",
+    "user_id": "uuid-or-int-here",
+    "workout_notes": "Leg day. Felt strong. Focused on depth and tempo.",
+    "tags": ["legs", "hypertrophy", "week4"],
+    "exercises": [
+      {
+        "exercise_name": "Back Squat",
+        "exercise_tags": ["squat", "overload", "week4"],
+        "exercise_notes": "Felt strong. Focused on depth and tempo. Paused at bottom.",
+        "sets": [
+          {
+            "set_number": 1,
+            "reps": 8,
+            "weight_kg": 120.0,
+            "rpe": 8.0,
+            "additional_specifications": {
+                "tempo": "3-0-1",
+                "rest_seconds": 120,
+                "set_notes": "Controlled tempo, paused at bottom"
+            }
+          },
+          {
+            "set_number": 2,
+            "reps": 8,
+            "weight_kg": 125.0,
+            "rpe": 9.0,
+            "additional_specifications": {
+                "tempo": "3-0-1",
+                "rest_seconds": 120,
+                "set_notes": "Controlled tempo, paused at bottom"
+            }
+          }
+        ]
+      
+    },
+      {
+        "exercise_name": "Leg Curl",
+        "exercise_tags": ["leg curl", "overload", "week4"],
+        "exercise_notes": "Felt strong. Focused on depth and tempo. Paused at bottom.",
+        "sets": [
+          {
+            "set_number": 1,
+            "reps": 12,
+            "weight_kg": 45.0,
+            "rpe": 8.0,
+            "additional_specifications": {
+                "tempo": "3-0-1",
+                "rest_seconds": 120,
+                "set_notes": "Controlled tempo, paused at bottom"
+            }
+          },
+          {
+            "set_number": 2,
+            "reps": 12,
+            "weight_kg": 47.5,
+            "rpe": 9.0,
+            "additional_specifications": {
+                "tempo": "3-0-1",
+                "rest_seconds": 120,
+                "set_notes": "Controlled tempo, paused at bottom"
+            }
+          }
+        ]
+      }
+    ]
+  }
