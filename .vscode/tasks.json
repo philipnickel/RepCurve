@@ -1,0 +1,414 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start Django Server",
+      "type": "shell",
+      "command": "conda",
+      "args": [
+        "run", 
+        "-n", 
+        "RepCurveEnv", 
+        "python", 
+        "manage.py", 
+        "runserver"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "runOptions": {
+        "instanceLimit": 1
+      },
+      "detail": "Start Django development server on port 8000"
+    },
+    {
+      "label": "Start Flutter Web",
+      "type": "shell",
+      "command": "/Applications/flutter/bin/flutter",
+      "args": [
+        "run",
+        "-d",
+        "chrome",
+        "--web-port=3000",
+        "--web-hostname=127.0.0.1"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/repcurve_app",
+        "env": {
+          "PATH": "/Applications/flutter/bin:${env:PATH}"
+        }
+      },
+      "problemMatcher": [],
+      "runOptions": {
+        "instanceLimit": 1
+      },
+      "detail": "Start Flutter web app on port 3000"
+    },
+    {
+      "label": "Start Both Services",
+      "dependsOrder": "parallel",
+      "dependsOn": [
+        "Start Django Server",
+        "Start Flutter Web"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Start both Django server and Flutter web app in separate terminals"
+    },
+    {
+      "label": "Setup Database",
+      "type": "shell",
+      "command": "conda",
+      "args": [
+        "run",
+        "-n",
+        "RepCurveEnv",
+        "python",
+        "manage.py",
+        "migrate"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "detail": "Run Django migrations to setup database"
+    },
+    {
+      "label": "Populate Exercises",
+      "type": "shell",
+      "command": "conda",
+      "args": [
+        "run",
+        "-n",
+        "RepCurveEnv",
+        "python",
+        "manage.py",
+        "populate_exercises"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "detail": "Load exercise database with powerlifting exercises"
+    },
+    {
+      "label": "Flutter Clean & Get",
+      "type": "shell",
+      "command": "/Applications/flutter/bin/flutter",
+      "args": [
+        "clean"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/repcurve_app",
+        "env": {
+          "PATH": "/Applications/flutter/bin:${env:PATH}"
+        }
+      },
+      "problemMatcher": [],
+      "detail": "Clean Flutter build cache and get dependencies",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Flutter Get Dependencies"
+      ]
+    },
+    {
+      "label": "Flutter Get Dependencies",
+      "type": "shell",
+      "command": "/Applications/flutter/bin/flutter",
+      "args": [
+        "pub",
+        "get"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": false,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/repcurve_app",
+        "env": {
+          "PATH": "/Applications/flutter/bin:${env:PATH}"
+        }
+      },
+      "problemMatcher": [],
+      "detail": "Get Flutter dependencies"
+    },
+    {
+      "label": "Create Conda Environment",
+      "type": "shell",
+      "command": "conda",
+      "args": [
+        "env",
+        "create",
+        "-f",
+        "environment.yml"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "detail": "Create RepCurveEnv conda environment from environment.yml"
+    },
+    {
+      "label": "Full Setup",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Setup Database",
+        "Populate Exercises",
+        "Flutter Get Dependencies"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Complete project setup: database, exercises, and Flutter dependencies"
+    },
+    {
+      "label": "Open API Documentation",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-c",
+        "if curl -s http://127.0.0.1:8000/api/health/ > /dev/null 2>&1; then open http://127.0.0.1:8000/api/docs/; else echo '❌ Django server not running! Start it first with \"Start Django Server\" task'; fi"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Open Swagger UI API documentation (checks if Django is running)"
+    },
+    {
+      "label": "Open Django Admin",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-c",
+        "if curl -s http://127.0.0.1:8000/api/health/ > /dev/null 2>&1; then open http://127.0.0.1:8000/admin/; else echo '❌ Django server not running! Start it first with \"Start Django Server\" task'; fi"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Open Django admin interface (checks if Django is running)"
+    },
+    {
+      "label": "Open ReDoc Documentation",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-c",
+        "if curl -s http://127.0.0.1:8000/api/health/ > /dev/null 2>&1; then open http://127.0.0.1:8000/api/redoc/; else echo '❌ Django server not running! Start it first with \"Start Django Server\" task'; fi"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Open ReDoc API documentation (checks if Django is running)"
+    },
+    {
+      "label": "Open All Documentation",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-c",
+        "echo '🔍 Checking if Django server is running...' && if curl -s http://127.0.0.1:8000/api/health/ > /dev/null 2>&1; then echo '✅ Django server is running, opening documentation...' && sleep 1 && open http://127.0.0.1:8000/api/docs/ && sleep 0.5 && open http://127.0.0.1:8000/api/redoc/ && sleep 0.5 && open http://127.0.0.1:8000/admin/; else echo '❌ Django server is not running!' && echo 'Please start Django server first:' && echo 'Cmd+Shift+P → \"Tasks: Run Task\" → \"Start Django Server\"' && echo 'OR' && echo 'Cmd+Shift+P → \"Tasks: Run Task\" → \"Start Both Services\"'; fi"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Check if Django is running, then open Swagger UI, ReDoc, and Django admin"
+    },
+    {
+      "label": "Test API Health",
+      "type": "shell",
+      "command": "curl",
+      "args": [
+        "-s",
+        "http://127.0.0.1:8000/api/health/"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Test API health endpoint and show response"
+    },
+    {
+      "label": "🚀 Start Everything",
+      "dependsOrder": "parallel",
+      "dependsOn": [
+        "Start Both Services",
+        "Open Docs After Delay"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": true
+      },
+      "problemMatcher": [],
+      "detail": "🚀 Start Django + Flutter, and open documentation automatically"
+    },
+    {
+      "label": "Open Docs After Delay",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-c",
+        "echo '⏳ Waiting 8 seconds for servers to start...' && sleep 8 && echo '🔍 Checking if Django is ready...' && if curl -s http://127.0.0.1:8000/api/health/ > /dev/null 2>&1; then echo '✅ Django is ready!' && echo '📖 Opening documentation...' && open http://127.0.0.1:8000/api/docs/ && sleep 1 && open http://127.0.0.1:8000/api/redoc/ && sleep 1 && open http://127.0.0.1:8000/admin/ && echo '🎉 Documentation opened!' && echo '' && echo '📱 Flutter: http://localhost:3000' && echo '🔧 Django: http://127.0.0.1:8000' && echo '📖 Docs: http://127.0.0.1:8000/api/docs/'; else echo '❌ Django not ready yet. Try:' && echo 'Cmd+Shift+P → \"Tasks: Run Task\" → \"Open All Documentation\"'; fi"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Wait for Django, then automatically open all documentation"
+    },
+    {
+      "label": "📖 Open Docs Now",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-c",
+        "echo '📖 Opening RepCurve documentation...' && open http://127.0.0.1:8000/api/docs/ && echo '✅ Swagger UI opened' && sleep 0.5 && open http://127.0.0.1:8000/api/redoc/ && echo '✅ ReDoc opened' && sleep 0.5 && open http://127.0.0.1:8000/admin/ && echo '✅ Django Admin opened' && echo '' && echo '🎉 All documentation opened!' && echo 'If pages don\\'t load, ensure Django is running first.'"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Manually open all documentation (use if auto-open fails)"
+    },
+    {
+      "label": "🔍 Troubleshoot Setup",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-c",
+        "echo '🔍 Troubleshooting RepCurve setup...' && echo '' && echo '1️⃣ Checking conda environment:' && conda env list | grep RepCurveEnv && echo '2️⃣ Checking Flutter:' && /Applications/flutter/bin/flutter --version | head -1 && echo '3️⃣ Checking Python packages:' && conda run -n RepCurveEnv python -c \"import django; print('Django version:', django.VERSION)\" && echo '4️⃣ Checking database:' && ls -la db.sqlite3 2>/dev/null && echo '5️⃣ Checking Flutter dependencies:' && ls -la repcurve_app/pubspec.lock 2>/dev/null && echo '' && echo '✅ Setup check complete!'"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": true
+      },
+      "problemMatcher": [],
+      "detail": "Check conda, Flutter, database, and dependencies"
+    }
+  ]
+}
