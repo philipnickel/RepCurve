@@ -1,0 +1,12 @@
+name: RepCurveEnv
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+    - django==5.2.4
+    - djangorestframework
+    - django-cors-headers
+    - asgiref
+    - sqlparse
